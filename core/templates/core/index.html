@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru"><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"></head>
+<body class="container mt-4">
+    <h2>Список операций</h2>
+    <form method="get" class="row g-2 mb-4 p-3 border rounded">
+        <div class="col"><input type="date" name="date_from" class="form-control" placeholder="От"></div>
+        <div class="col"><input type="date" name="date_to" class="form-control" placeholder="До"></div>
+        <div class="col"><button type="submit" class="btn btn-primary w-100">Фильтр</button></div>
+        <div class="col"><a href="{% url 'index' %}" class="btn btn-secondary w-100">Сброс</a></div>
+        <div class="col"><a href="{% url 'transaction-create' %}" class="btn btn-success w-100">+ Создать</a></div>
+    </form>
+    <table class="table table-bordered">
+        <thead><tr><th>Дата</th><th>Статус</th><th>Тип</th><th>Категория</th><th>Подкатегория</th><th>Сумма</th><th>Действия</th></tr></thead>
+        <tbody>
+            {% for t in transactions %}
+            <tr>
+                <td>{{ t.date }}</td><td>{{ t.status.name }}</td><td>{{ t.transaction_type.name }}</td>
+                <td>{{ t.category.name }}</td><td>{{ t.subcategory.name }}</td><td>{{ t.amount }} р.</td>
+                <td>
+                    <a href="{% url 'transaction-update' t.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{% url 'transaction-delete' t.pk %}" class="btn btn-sm btn-danger" onclick="return confirm('Удалить?')">Del</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body></html>
