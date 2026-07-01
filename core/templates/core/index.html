@@ -2,12 +2,36 @@
 <html lang="ru"><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"></head>
 <body class="container mt-4">
     <h2>Список операций</h2>
-    <form method="get" class="row g-2 mb-4 p-3 border rounded">
-        <div class="col"><input type="date" name="date_from" class="form-control" placeholder="От"></div>
-        <div class="col"><input type="date" name="date_to" class="form-control" placeholder="До"></div>
-        <div class="col"><button type="submit" class="btn btn-primary w-100">Фильтр</button></div>
-        <div class="col"><a href="{% url 'index' %}" class="btn btn-secondary w-100">Сброс</a></div>
-        <div class="col"><a href="{% url 'transaction-create' %}" class="btn btn-success w-100">+ Создать</a></div>
+    <form method="get" class="row g-2 mb-4 p-3 border rounded align-items-end">
+        <div class="col-md-2">
+            <label class="small">От:</label>
+            <input type="date" name="date_from" class="form-control" value="{{ request.GET.date_from }}">
+        </div>
+        <div class="col-md-2">
+            <label class="small">До:</label>
+            <input type="date" name="date_to" class="form-control" value="{{ request.GET.date_to }}">
+        </div>
+        <div class="col-md-2">
+            <label class="small">Статус:</label>
+            <select name="status" class="form-control">
+                <option value="">Все</option>
+                {% for s in statuses %}<option value="{{ s.id }}" {% if request.GET.status == s.id|stringformat:"i" %}selected{% endif %}>{{ s.name }}</option>{% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="small">Тип:</label>
+            <select name="type" class="form-control">
+                <option value="">Все</option>
+                {% for t in types %}<option value="{{ t.id }}" {% if request.GET.type == t.id|stringformat:"i" %}selected{% endif %}>{{ t.name }}</option>{% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Фильтр</button>
+            <a href="{% url 'index' %}" class="btn btn-secondary w-100 mt-1">Сброс</a>
+        </div>
+        <div class="col-md-2">
+            <a href="{% url 'transaction-create' %}" class="btn btn-success w-100">+ Создать</a>
+        </div>
     </form>
     <table class="table table-bordered">
         <thead><tr><th>Дата</th><th>Статус</th><th>Тип</th><th>Категория</th><th>Подкатегория</th><th>Сумма</th><th>Действия</th></tr></thead>
